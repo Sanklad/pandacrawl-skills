@@ -12,19 +12,19 @@ rather than the model's guesswork.
 Everything, for whichever agent you use:
 
 ```sh
-npx skills add kamskans/pandacrawl-skills --skill '*'
+npx skills add Sanklad/pandacrawl-skills --skill '*'
 ```
 
 Or pick one:
 
 ```sh
-npx skills add kamskans/pandacrawl-skills --skill keyword-research
+npx skills add Sanklad/pandacrawl-skills --skill keyword-research
 ```
 
 Target a specific agent:
 
 ```sh
-npx skills add kamskans/pandacrawl-skills --skill '*' --agent claude-code
+npx skills add Sanklad/pandacrawl-skills --skill '*' --agent claude-code
 ```
 
 ## Skills
