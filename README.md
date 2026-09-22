@@ -49,5 +49,4 @@ have nothing to read.
 
 ## Licence
 
-MIT. Derived from [every-app/open-seo](https://github.com/every-app/open-seo),
-which is MIT-licensed; see `LICENSE`.
+MIT; see `LICENSE`.
