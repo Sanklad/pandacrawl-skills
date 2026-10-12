@@ -59,62 +59,7 @@ Ask for:
 
 Write the durable parts to `business_overview`: what the business does, who it is for, the target markets/locales, and the site's current stage.
 
-### 4. Capture goals
-
-Ask the user what they want from SEO:
-
-- More qualified leads
-- More signups/trials
-- More ecommerce revenue
-- More newsletter/audience growth
-- More brand/category awareness
-- Recovery from traffic loss
-- Better ranking for specific pages
-
-Ask for success metrics and timeframe. If goals are vague, help turn them into measurable goals such as "increase non-branded organic signups" or "rank top 10 for 20 buying-intent terms."
-
-Write the result to `current_goal`, including the metric and timeframe.
-
-### 5. Capture positioning and strategy context
-
-Ask what research they have already done about the company, product, audience, and competitors. Request any notes, docs, customer interviews, positioning docs, pitch decks, landing pages, or strategy memos they can share.
-
-Probe for:
-
-- Who the product or site is for
-- What pain it solves
-- Why users choose it over alternatives
-- Competitors and substitutes
-- Strong opinions or positioning claims
-- Best customers and bad-fit customers
-- Existing content that already converts
-- Topics they do not want to target
-
-If the user has not done this yet, offer to help research positioning using the company website, competitor pages, reviews, forums, and web search.
-
-Write to `positioning`: audience, the problem, the differentiator, and any claims the user wants defended. Ask about voice, banned words or phrases, and topics to avoid, and write those to `writing_preferences` — content-drafting workflows read that section.
-
-### 6. Save competitors
-
-Turn the competitors and substitutes from step 5 into `addCompetitors` entries: one row per domain, with a short `notes` line on why they matter ("direct competitor, owns the comparison pages"). If the user is unsure who competes in search, `find_serp_competitors` on a handful of seed keywords will name them — confirm the list with the user before saving, and log the spend.
-
-Competitors saved here are reused by `competitive-landscape`, `competitor-analysis`, and `link-prospecting`.
-
-### 7. Inventory key assets
-
-Ask for or discover:
-
-- Sitemap or important URL list
-- Current blog/resources/content library
-- Product/category/feature pages
-- Existing keyword lists
-- Current rank trackers
-- Backlink or PR assets
-- Linkable assets such as studies, templates, tools, datasets, calculators, or original opinions
-
-Save the pages that actually matter with `addKeyPages` — money pages, topic hubs, and the linkable assets. This is a curated shortlist, not a site inventory: 10 to 30 URLs is normal. Give each one a `role` and, where known, the `topic` it targets.
-
-### 8. Connect Google Search Console
+### 4. Connect Google Search Console
 
 GSC is the richest first-party signal: existing impressions, near-ranking terms, cannibalization, and pages that already have search demand.
 
@@ -137,6 +82,63 @@ gsc/pages-last-3-months.csv
 gsc/queries-last-16-months.csv
 gsc/pages-last-16-months.csv
 ```
+
+### 5. Capture goals
+
+Ask the user what they want from SEO:
+
+- More qualified leads
+- More signups/trials
+- More ecommerce revenue
+- More newsletter/audience growth
+- More brand/category awareness
+- Recovery from traffic loss
+- Better ranking for specific pages
+
+Ask for success metrics and timeframe. If goals are vague, help turn them into measurable goals such as "increase non-branded organic signups" or "rank top 10 for 20 buying-intent terms."
+
+Write the result to `current_goal`, including the metric and timeframe.
+
+### 6. Capture positioning and strategy context
+
+Ask what research they have already done about the company, product, audience, and competitors. Request any notes, docs, customer interviews, positioning docs, pitch decks, landing pages, or strategy memos they can share.
+
+Probe for:
+
+- Who the product or site is for
+- What pain it solves
+- Why users choose it over alternatives
+- Competitors and substitutes
+- Strong opinions or positioning claims
+- Best customers and bad-fit customers
+- Existing content that already converts
+- Topics they do not want to target
+
+If the user has not done this yet, offer to help research positioning using the company website, competitor pages, reviews, forums, and web search.
+
+Write to `positioning`: audience, the problem, the differentiator, and any claims the user wants defended. Ask about voice, banned words or phrases, and topics to avoid, and write those to `writing_preferences` — content-drafting workflows read that section.
+
+### 7. Save competitors
+
+Don't make the user list their search competitors; most people can name their business rivals but not who they compete with in Google. Once Search Console is connected, call `suggest_competitors`: it finds the domains ranking alongside the site for its top non-brand searches (one paid call, about $0.01-0.02). Merge that with any business competitors the user named in step 6, show the combined list with each one's reason, and save what they confirm as `addCompetitors` entries: one row per domain, with a short `notes` line on why they matter ("ranks for 14 of our top 20 searches"). Without Search Console, fall back to `find_serp_competitors` on a handful of seed keywords. Log the spend.
+
+Competitors saved here are reused by `competitive-landscape`, `competitor-analysis`, and `link-prospecting`.
+
+### 8. Inventory key assets
+
+Don't ask the user which pages matter; most people don't know. Call `suggest_key_pages` (free): it ranks pages by Search Console clicks, Google Analytics conversions from search visitors, and, from the latest site audit, the homepage and commercial pages (pricing, product, services, sign-up), each with a role and the reasons. If no audit has run, start one with `run_site_audit` first. Show the list, let the user trim or add, and save what they confirm.
+
+Then ask about, or discover, anything the data can't show:
+
+- Sitemap or important URL list
+- Current blog/resources/content library
+- Product/category/feature pages
+- Existing keyword lists
+- Current rank trackers
+- Backlink or PR assets
+- Linkable assets such as studies, templates, tools, datasets, calculators, or original opinions
+
+Save the pages that actually matter with `addKeyPages` — money pages, topic hubs, and the linkable assets. This is a curated shortlist, not a site inventory: 10 to 30 URLs is normal. Give each one a `role` and, where known, the `topic` it targets.
 
 ### 9. Set up a local folder only for file work
 

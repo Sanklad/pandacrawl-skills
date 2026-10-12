@@ -70,7 +70,7 @@ Explain the difference between data sources:
 - Credits: free sources first. Search Console, Analytics, Bing, site audits without Lighthouse, project context and reports cost nothing; keyword, SERP, domain, backlink, rank-check and AI-visibility runs spend credits. Say the cost before a large batch.
 - Web search can find current market context, recent pages, reviews, docs, social profiles, and contact paths outside PandaCrawl.
 - Browser/page scraping can extract page copy, headings, author names, contact links, schema, and content structure.
-- Project context (`get_project_context` / `update_project_context`) is the project's shared memory: business, goal, positioning, writing preferences, competitors, key pages, and a research log. It is free, every skill reads it, and the user can edit it on the project's Context settings page.
+- Project context (`get_project_context` / `update_project_context`) is the project's shared memory: business, goal, positioning, writing preferences, competitors, key pages, and a research log. It is free, every skill reads it, and the user can edit it on the project's Context settings page. Never ask users to list their key pages or search competitors from memory: propose them with `suggest_key_pages` (free) and `suggest_competitors` (one small paid call), and save what they confirm.
 - Local files are for file work: GSC CSVs, crawls, and drafts.
 - Reports are where finished work lives: each workflow saves its deliverable to the project's Reports page as an HTML page anyone on the team can open and print. Before starting a workflow, call `list_reports` to see what already exists and point the user at it instead of re-running research they already paid for.
 

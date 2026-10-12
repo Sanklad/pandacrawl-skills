@@ -21,7 +21,7 @@ Use this for generative engine optimisation (GEO): "does ChatGPT recommend us", 
 The project-context tools are free and shared with the app and other agents.
 
 1. Call `get_project_context` first and ground the work in it — the business and positioning decide which questions matter, and tracking uses the saved competitor list to measure share of voice.
-2. This skill needs `business_overview` and competitors. If either is missing, run a minimal inline setup: infer what the business does and a shortlist of competitors from the site and `find_serp_competitors`, confirm both with the user in one message, and save them with `update_project_context` (`addCompetitors` for the competitors). Never front-load the full interview; suggest `seo-project-setup` at the end for the rest.
+2. This skill needs `business_overview` and competitors. If either is missing, run a minimal inline setup: infer what the business does from the site, propose competitors with `suggest_competitors` (or `find_serp_competitors` on a few seed keywords when Search Console isn't connected), confirm both with the user in one message, and save them with `update_project_context` (`addCompetitors` for the competitors). Never front-load the full interview; suggest `seo-project-setup` at the end for the rest.
 3. Before spending credits, check the research log and call `get_ai_visibility`. If tracking already exists with a completed run in the last 30 days, analyse that run instead of starting a new one, and say so.
 4. On finish, write back what is durable — the brand's other names, any competitors the AI answers revealed that the user confirms, the pages the report singles out via `addKeyPages` — and append a research log entry: `{ appendResearchLog: { summary: "AI visibility: <brand>, <n> prompts x <models>. Verdict: <conclusion>" } }`.
 
@@ -37,6 +37,7 @@ Deliver through the `seo-report` skill, saving with `skill: "ai-visibility"`. If
 - `setup_prompt_tracking`: brand name, other names, models and schedule. Free.
 - `add_tracked_prompts` / `remove_tracked_prompts`: manage the question list. Free; every tracked question costs money on each run.
 - `run_prompt_tracking`: asks every question to every chosen model. Spends money: pass the per-run cost the user approved as `maxCostUsd`. Results arrive over a few minutes.
+- `suggest_competitors`: proposes search competitors from the site's top Search Console searches when none are saved. One paid call, about $0.01-0.02.
 - `get_ranked_keywords` with `resultTypes: ["ai_overview_reference"]`: the searches where Google's AI Overviews cite a domain. Paid; one call per domain.
 - `get_bing_index_status`, `inspect_bing_url`: free. Whether key pages are in Bing, whose index also feeds Copilot and ChatGPT search. `list_bing_sites` / `set_bing_site` connect a site if none is set.
 - `submit_urls_to_bing`, `setup_indexnow`, `submit_urls_to_indexnow`: free. Get missing pages crawled. Ask the user before submitting.
