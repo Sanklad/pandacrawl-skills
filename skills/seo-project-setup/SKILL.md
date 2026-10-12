@@ -7,7 +7,7 @@ description: Populate a project's shared PandaCrawl context — site scope, goal
 
 ## Goal
 
-Interview the user once about one website or SEO project, and store the answers in that project's shared context in PandaCrawl with `update_project_context`. That context is read by every other skill, by SAM in the app, and by the user on the project's Context settings page — so it survives new sessions, new machines, and new agents. This is a context setup workflow, not a full audit.
+Interview the user once about one website or SEO project, and store the answers in that project's shared context in PandaCrawl with `update_project_context`. That context is read by every other skill, by Panda in the app, and by the user on the project's Context settings page — so it survives new sessions, new machines, and new agents. This is a context setup workflow, not a full audit.
 
 ## Tone
 
