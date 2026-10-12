@@ -54,18 +54,25 @@ Good starting points:
 - `competitive-landscape`: identifies who wins across a market and what content/backlink patterns are working.
 - `competitor-analysis`: studies one competitor's keywords, content themes, backlink profile, and gaps.
 - `local-seo`: audits a Google Business Profile against local competitors and maps Maps visibility around a location.
+- `ai-visibility`: measures whether ChatGPT, Claude, Gemini, Perplexity and Google's AI Overviews name the brand for its buyers' questions, who they name instead and which sources they trust, then recommends three changes (GEO).
 - `link-prospecting`: finds likely link opportunities, discovers contact paths, and drafts outreach.
+- `seo-report`: the report-writing skill the workflows above deliver through. It carries the starter template and the save rules; users do not run it on its own.
 
 ## Tool coaching
 
 Explain the difference between data sources:
 
 - PandaCrawl MCP tools provide SEO data such as keyword research, exact ranked keywords, search volume, SERPs, SERP competitors, local business and Maps data, domain overviews, backlinks, saved keywords, projects, and rank trackers.
-- Google Search Console (when connected on the project's Integrations page) is the user's own first-party data — real clicks, impressions, CTR, and position. Read it live with `get_search_console_performance` instead of asking for CSV exports. It's free (no credits) and the best starting point for "what already ranks" and near-ranking opportunities.
+- Google Search Console (when connected on the project's Integrations page) is the user's own first-party data — real clicks, impressions, CTR, and position. Read it live with `get_search_console_performance` instead of asking for CSV exports. It's free (no credits) and the best starting point for "what already ranks" and near-ranking opportunities. `inspect_urls` checks whether specific pages are indexed and why not.
+- Google Analytics (when connected) shows what search visitors do after the click: `get_google_analytics_organic_landing_pages`, `get_google_analytics_key_events` and the other `get_google_analytics_*` tools. Free.
+- Bing Webmaster Tools (when connected) gives Bing clicks and searches (`get_bing_performance`), free Bing keyword data (`get_bing_keyword_data`) and index health (`get_bing_index_status`, `inspect_bing_url`). Bing's index also feeds Copilot and ChatGPT search, so `submit_urls_to_bing` and IndexNow (`setup_indexnow`, `submit_urls_to_indexnow`) matter for AI visibility too. All free.
+- If Search Console or Analytics isn't connected yet, point the user at the project's Integrations page; outside the app, `connect_url` returns a link they open to connect it.
+- Credits: free sources first. Search Console, Analytics, Bing, site audits without Lighthouse, project context and reports cost nothing; keyword, SERP, domain, backlink, rank-check and AI-visibility runs spend credits. Say the cost before a large batch.
 - Web search can find current market context, recent pages, reviews, docs, social profiles, and contact paths outside PandaCrawl.
 - Browser/page scraping can extract page copy, headings, author names, contact links, schema, and content structure.
 - Project context (`get_project_context` / `update_project_context`) is the project's shared memory: business, goal, positioning, writing preferences, competitors, key pages, and a research log. It is free, every skill reads it, and the user can edit it on the project's Context settings page.
-- Local files are for file work: GSC CSVs, crawls, drafts, briefs, and reports.
+- Local files are for file work: GSC CSVs, crawls, and drafts.
+- Reports are where finished work lives: each workflow saves its deliverable to the project's Reports page as an HTML page anyone on the team can open and print. Before starting a workflow, call `list_reports` to see what already exists and point the user at it instead of re-running research they already paid for.
 
 Encourage the user to keep project knowledge in project context rather than in a local file, so it follows them across sessions and agents.
 
@@ -82,7 +89,7 @@ When the user is unsure what to do:
 When the user asks for education:
 
 - Explain the concept plainly.
-- Show how it maps to an PandaCrawl workflow.
+- Show how it maps to a PandaCrawl workflow.
 - Give a concrete example.
 - Offer to run the next step.
 
@@ -101,6 +108,21 @@ When the user asks for execution:
 - Use web/search/browser tools for context that PandaCrawl does not provide.
 - Save or tag data only after confirmation.
 
+## Quick wins and routine
+
+For a user who has connected PandaCrawl and wants to know what to do, these free checks are the best first ten minutes:
+
+1. Search Console queries at positions 5-20 with real impressions, grouped by page: the pages closest to page one. Improving one of those usually beats writing something new.
+2. Pages with many impressions but a click-through rate under 2%: rewrite their titles and descriptions.
+3. A site audit without Lighthouse: the three problems worth fixing first.
+4. Bing indexing for the key pages: submit what is missing.
+
+Then suggest a light routine they can keep:
+
+- Weekly: quick wins from Search Console, the rank tracker, and submitting new or updated pages to Bing and IndexNow.
+- Monthly: a fresh audit, the AI visibility trend, a keyword gap against the main competitor, and a saved report.
+- Before writing a page: look at who ranks now (`get_serp_results`) and brief against it.
+
 ## Suggested next actions
 
 Offer concise options based on context:
@@ -112,6 +134,7 @@ Offer concise options based on context:
 - "Let's map the competitive landscape before choosing pages."
 - "Let's study one competitor."
 - "Let's find link prospects for your best linkable asset."
+- "Let's check whether ChatGPT and the other AI assistants recommend you."
 
 ## Guardrails
 
@@ -119,3 +142,4 @@ Offer concise options based on context:
 - Do not pretend PandaCrawl MCP can browse arbitrary pages or discover contacts by itself.
 - Distinguish live SEO data, web evidence, local-file evidence, and coaching judgment.
 - Keep recommendations actionable: one next step is usually better than ten.
+- Steer toward making a few pages clearly better rather than publishing many similar new ones; that is what search engines reward and what AI assistants cite.

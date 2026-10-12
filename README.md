@@ -40,11 +40,13 @@ npx skills add Sanklad/pandacrawl-skills --skill '*' --agent claude-code
 | `local-seo` | Local pack and map visibility work |
 | `seo-audit` | Runs a crawl and reads the findings back |
 | `seo-coach` | Talks through strategy with your data in hand |
+| `ai-visibility` | Checks whether ChatGPT, Claude, Gemini, Perplexity and Google's AI Overviews name you, and what to change (GEO) |
+| `seo-report` | Writes and saves each workflow's finished report; the other skills deliver through it |
 
 ## Prerequisites
 
 Connect the PandaCrawl MCP server first — the URL and an API key are on the
-**AI & MCP** page inside the app. Skills call that server, so without it they
+**Connect your AI** page inside the app. Skills call that server, so without it they
 have nothing to read.
 
 ## Licence
