@@ -1,6 +1,6 @@
 ---
 name: ai-visibility
-description: "Find out whether ChatGPT, Claude, Gemini, Perplexity and Google's AI Overviews name a brand for the questions its buyers ask, who they name instead, which sources they trust, and what to change. Use for GEO, AI search visibility, LLM visibility, 'does ChatGPT recommend us', or AI citation work."
+description: "Find out whether ChatGPT, Claude, Gemini, Perplexity, Google's AI Overviews and Microsoft Copilot name or cite a brand for the questions its buyers ask, who they name instead, which sources they trust, and what to change. Use for GEO, AI search visibility, LLM visibility, Copilot or Bing AI citations, 'does ChatGPT recommend us', or AI citation work."
 ---
 
 # PandaCrawl AI Visibility
@@ -9,7 +9,7 @@ description: "Find out whether ChatGPT, Claude, Gemini, Perplexity and Google's 
 
 Measure how AI assistants answer the questions a business's buyers ask, then turn that into a short list of changes that make the business more likely to be named and cited. The report answers three things: where the brand is named today, who is named instead and why, and the three changes most likely to move that.
 
-Use this for generative engine optimisation (GEO): "does ChatGPT recommend us", "why does Perplexity cite our competitor", "are we in Google's AI Overviews". For classic rankings use `seo-audit` or `keyword-research`; for one competitor's whole footprint use `competitor-analysis`.
+Use this for generative engine optimisation (GEO): "does ChatGPT recommend us", "why does Perplexity cite our competitor", "are we in Google's AI Overviews", "how often does Copilot cite us". For classic rankings use `seo-audit` or `keyword-research`; for one competitor's whole footprint use `competitor-analysis`.
 
 ## Required inputs
 
@@ -41,6 +41,7 @@ Deliver through the `seo-report` skill, saving with `skill: "ai-visibility"`. If
 - `get_ranked_keywords` with `resultTypes: ["ai_overview_reference"]`: the searches where Google's AI Overviews cite a domain. Paid; one call per domain.
 - `get_bing_index_status`, `inspect_bing_url`: free. Whether key pages are in Bing, whose index also feeds Copilot and ChatGPT search. `list_bing_sites` / `set_bing_site` connect a site if none is set.
 - `submit_urls_to_bing`, `setup_indexnow`, `submit_urls_to_indexnow`: free. Get missing pages crawled. Ask the user before submitting.
+- `get_bing_ai_citations`: free. How often Microsoft Copilot and Bing's AI answers cite the site, from the Bing Webmaster Tools AI Performance exports the user uploaded (Bing has no API for this report). Returns citations by day with a 28-day comparison, the most-cited pages, and grounding queries: the searches Copilot ran to find sources, each with intent, topic and citation share (the site's percentage of all citations for that query). `hasData: false` means nothing is uploaded yet.
 
 Keep spend modest: one `suggest_tracked_prompts` call, one tracking run of 8 to 15 questions, and at most three `get_ranked_keywords` calls (the brand and its top two competitors).
 
@@ -51,15 +52,20 @@ Keep spend modest: one `suggest_tracked_prompts` call, one tracking run of 8 to 
 3. `setup_prompt_tracking` (brand, other names, all four models, weekly schedule unless the user asks otherwise), then `add_tracked_prompts`.
 4. Call `get_ai_visibility` for `estimate.perRunUsd`, tell the user the cost of one run and of the schedule per month, and wait for approval. Then `run_prompt_tracking` with that amount as `maxCostUsd`. While it runs, do steps 5 and 6. Check `get_ai_visibility` every minute or two until `latestRun.status` is `completed`; do not poll in a tight loop.
 5. Google AI Overviews: `get_ranked_keywords` for the brand's domain and its top two competitors with `resultTypes: ["ai_overview_reference"]`. Note which searches cite each, and the ones that cite competitors but not the brand.
-6. Bing: if a Bing site is connected, check `get_bing_index_status` and `inspect_bing_url` for the key pages and the pages most relevant to the tracked questions. If none is connected, note it as a recommendation rather than stopping.
+6. Bing and Copilot:
+   - If a Bing site is connected, check `get_bing_index_status` and `inspect_bing_url` for the key pages and the pages most relevant to the tracked questions. If none is connected, note it as a recommendation rather than stopping.
+   - Call `get_bing_ai_citations`. If `hasData` is false, don't stop: tell the user how to add it (in Bing Webmaster Tools open AI Performance, export the chart, the Grounding queries table and the Pages table as CSV, and upload all three on the Copilot citations page, the result's `meta.url`), and add it to "What to do next" if Copilot matters to their buyers.
+   - If there is data, note the 28-day citation trend, the most-cited pages, and the grounding queries with the most citations and with a low citation share. Check the dates: say how old the latest upload is, and suggest a fresh export if it's more than a month old.
 7. Analyse the run:
    - Mention rate and average position by model, and the questions where the brand is invisible.
    - Who is named instead, and how often (share of voice).
    - The cited sources, grouped three ways: the brand's own pages, competitors' pages, and third-party pages (review sites, comparison lists, forums, directories, encyclopaedias). Fetch the most-cited pages yourself to see what they actually say.
+   - If Copilot data exists, compare it with the tracked questions. Grounding queries are evidence of what Copilot actually searches when it answers people in this space: high-citation ones the tracked list doesn't cover are candidates to track (propose them; don't add without the user's say-so). Grounding queries with high citations but a low share are where competitors' pages win; read what ranks for them. Copilot's most-cited pages show what already works: say what they have in common.
 8. Decide the three changes. Derive them from the data, never from generic advice. Common patterns:
    - The answers cite third-party comparison or review pages that leave the brand out: get listed or reviewed there, with the page and a ready-to-send pitch.
    - A competitor's own page answers the question directly and the brand has no such page: write the plain, honest answer page, naming the question it targets.
    - The brand's relevant pages are not in Bing: submit them and set up IndexNow, with the exact URLs.
+   - Copilot cites the brand heavily for a topic but its share is low on the commercial grounding queries next to it: strengthen or create the page that answers those queries, naming them.
    - The brand is named but described wrongly: correct the source the answers cite, and make the brand's own pages state the facts plainly.
 9. Review before delivering: run an adversarial pass with a second agent or model if your environment has one, otherwise a fresh self-review. Attack claims beyond the evidence, overconfidence from a single run, and recommendations a small team cannot do.
 10. Write and save the report through the `seo-report` skill. Suggest keeping the weekly schedule running and rerunning this skill in a month to compare.
@@ -77,7 +83,7 @@ Sections in this order:
 3. **Who gets named instead** — share of voice against competitors, with the questions each one wins.
 4. **The sources AI trusts** — the most-cited pages, grouped as yours, competitors' and third-party, each with what it says that the answers repeat.
 5. **Google AI Overviews** — the searches where the brand and its competitors are cited, and the gaps.
-6. **Indexing** — Bing status for the key pages, or a note that Bing is not connected.
+6. **Bing and Copilot** — Bing index status for the key pages (or a note that Bing is not connected), then Copilot citations if uploaded: the 28-day trend, the most-cited pages, and the grounding queries with the most citations and the lowest share, with the dates the data covers. Without an upload, one line on how to add it.
 7. **What to do next** — the three changes, each with the exact page, URL or message, in priority order.
 8. **How this report was made** — opens with the skill link line from `seo-report`, pointing at `https://pandacrawl.app/docs/skills/ai-visibility` ("PandaCrawl AI Visibility skill"), then the questions asked, the models, the run date and cost, and what you verified by hand.
 
@@ -86,5 +92,6 @@ Sections in this order:
 - AI answers vary between runs. One run is a sample: say so, prefer patterns across several questions and models, and point to the trend once more runs exist. Never promise that a change will get the brand named.
 - Never recommend fake reviews, posing as a customer, astroturfing forums, or buying placements dressed up as editorial. Recommend asking real customers and earning honest coverage.
 - Quote cited pages accurately. Check every page you name exists and says what you say it says.
+- Copilot data is Bing's sample, with no clicks, and grounding queries are the searches Copilot ran, not what people typed. Never present citations as traffic or grounding queries as user searches.
 - State costs before spending, in the units the user sees, and never run tracking without approval.
-- Tone: calm and plain. No exclamation points, no drama words. Gloss AI Overview, share of voice and IndexNow on first use.
+- Tone: calm and plain. No exclamation points, no drama words. Gloss AI Overview, share of voice, IndexNow, grounding query and citation share on first use.
