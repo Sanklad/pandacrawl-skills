@@ -40,6 +40,7 @@ npx skills add Sanklad/pandacrawl-skills --skill '*' --agent claude-code
 | `local-seo` | Local pack and map visibility work |
 | `seo-audit` | Runs a crawl and reads the findings back |
 | `seo-coach` | Talks through strategy with your data in hand |
+| `comparison-pages` | Writes honest comparison and alternative pages that rank and get quoted by AI assistants, then submits and tracks them |
 | `ai-visibility` | Checks whether ChatGPT, Claude, Gemini, Perplexity, Google's AI Overviews and Copilot name or cite you, and what to change (GEO) |
 | `seo-report` | Writes and saves each workflow's finished report; the other skills deliver through it |
 

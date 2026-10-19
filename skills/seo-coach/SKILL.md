@@ -55,6 +55,7 @@ Good starting points:
 - `competitor-analysis`: studies one competitor's keywords, content themes, backlink profile, and gaps.
 - `local-seo`: audits a Google Business Profile against local competitors and maps Maps visibility around a location.
 - `ai-visibility`: measures whether ChatGPT, Claude, Gemini, Perplexity and Google's AI Overviews name the brand for its buyers' questions, who they name instead and which sources they trust, then recommends three changes (GEO).
+- `comparison-pages`: finds the comparison and alternative searches worth winning ("<competitor> alternative", "X vs Y"), fact-checks competitor prices against their own pages, writes honest comparison pages, and publishes, submits and tracks them.
 - `link-prospecting`: finds likely link opportunities, discovers contact paths, and drafts outreach.
 - `seo-report`: the report-writing skill the workflows above deliver through. It carries the starter template and the save rules; users do not run it on its own.
 
